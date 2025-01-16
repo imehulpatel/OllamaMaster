@@ -3,7 +3,6 @@ package server
 import (
 	"bytes"
 	"context"
-	"encoding/binary"
 	"errors"
 	"fmt"
 	"log/slog"
@@ -11,7 +10,6 @@ import (
 
 	"github.com/ollama/ollama/api"
 	"github.com/ollama/ollama/llm"
-	"github.com/ollama/ollama/model/mllama"
 	"github.com/ollama/ollama/template"
 )
 
@@ -92,7 +90,7 @@ func chatPrompt(ctx context.Context, m *Model, tokenize tokenizeFunc, opts *api.
 			var imgData llm.ImageData
 
 			if isMllama {
-				data, opts, err := mllama.Preprocess(bytes.NewReader(i))
+				/*data, opts, err := mllama.Preprocess(bytes.NewReader(i))
 				if err != nil {
 					return "", nil, err
 				}
@@ -112,6 +110,10 @@ func chatPrompt(ctx context.Context, m *Model, tokenize tokenizeFunc, opts *api.
 					ID:            len(images),
 					Data:          buf.Bytes(),
 					AspectRatioID: ar,
+				}*/
+				imgData = llm.ImageData{
+					ID:   len(images),
+					Data: i,
 				}
 				imgPrompt = "<|image|>"
 			} else {
